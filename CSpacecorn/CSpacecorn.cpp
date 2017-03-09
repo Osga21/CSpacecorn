@@ -65,8 +65,7 @@ int stringcompare(char a[], char b[]);
 void asciiprint(FILE *fptr);
 void SetColor(int ForgC);
 void save(int level);
-
-
+void stdinclear();
 void main()
 {
 	system("mode con:cols=80 lines=38"); //sets window size
@@ -80,19 +79,19 @@ void main()
 	asciiprint(fptr);
 
 	fclose(fptr);
-	printf("\t|-------------------------Main Menu---------------------------|\n");
+	printf("\t|---------------------------MAIN MENU-------------------------|\n");
 	printf("\t|                                                             |\n");
-	printf("\t|                           1) Play                           |\n");
-	printf("\t|                            2) Password                      |\n");
-	printf("\t|                             3) Credits                      |\n");
-	printf("\t|                              4) Options                     | \n");
-	printf("\t|                               5) Load                       |        \n");
-	printf("\t|                                6) Quit                      |        \n");
+	printf("\t|                       1) Play (new game)                    |\n");
+	printf("\t|                        2) Password                          |\n");
+	printf("\t|                         3) Credits                          |\n");
+	printf("\t|                          4) Options                         | \n");
+	printf("\t|                           5) Load                           |        \n");
+	printf("\t|                            6) Quit                          |        \n");
 	printf("\t|                                                             |\n");
 	printf("\t|-------------------------------------------------------------|\n");
 	char escolha[100];
 	gets_s(escolha);
-	if (strcmp(escolha, "play") == 0|| strcmp(escolha, "1")==0)
+	if (strcmp(escolha, "play") == 0 || strcmp(escolha, "1") == 0)
 	{
 		level1start();
 	}
@@ -126,20 +125,52 @@ void main()
 	}
 	if (strcmp(escolha, "options") == 0 || strcmp(escolha, "4") == 0)
 	{
-		char *filename = "textcolor.fab";
-		FILE *fptr = NULL;
-		if ((fptr = fopen(filename, "r")) == NULL)
+		system("cls");
+		printf("-----------SETTINGS-----------\n");
+		printf("1) Change text colour\n");
+		printf("2) Delete save file\n");
+		printf("3) Go back\n");
+		char options[100];
+		gets_s(options);
+		if (strcmp(options, "change text colour") == 0 || strcmp(options, "1") == 0)
 		{
-			perror("Error");
+			char *filename = "textcolor.fab";
+			FILE *fptr = NULL;
+			if ((fptr = fopen(filename, "r")) == NULL)
+			{
+				perror("Error");
+			}
+			system("cls");
+			asciiprint(fptr);
+
+			int cor = 0;
+			scanf("%d", &cor);
+			SetColor(cor);
+			stdinclear();
+			main();
+		}
+		if (strcmp(options, "delete save file") == 0 || strcmp(options, "2") == 0)
+		{
+			system("cls");
+			int fdel = remove("sav.fab");
+			if (fdel == 0)
+			{
+				printf("The save file has been deleted\n");
+				stdinclear();
+
+				main();
+
+			}
+			else
+			{
+				printf("Unable to delete file (file not present?)\n");
+				stdinclear();
+
+				main();
+
+			}
 		}
 
-		system("cls");
-		printf("Pick a color, any color!\n\n");
-		asciiprint(fptr);
-
-		int cor = 0;
-		scanf("%d",&cor);
-		SetColor(cor);
 
 	}
 	if (strcmp(escolha, "quit") == 0 || strcmp(escolha, "6") == 0)
@@ -150,7 +181,7 @@ void main()
 	{
 		FILE *savefile;
 		savefile = fopen("sav.fab", "r");
-		int setlevel=0;
+		int setlevel = 0;
 		if (savefile == NULL)
 		{
 			perror("Failed: ");
@@ -159,19 +190,18 @@ void main()
 		{
 			printf("%d", setlevel);
 
-			fscanf(savefile, "%d", setlevel);
+			fscanf(savefile, "%d", &setlevel); //Remember to add & for ints dum-dum!
 
 			fclose(savefile);
 
 		}
-		switch (setlevel) 
-			{
-				case 2: {level2start(); break; }
-				case 3:{level3start(); break; }
-				case 4:{level4start(); break; }
-			}
+		switch (setlevel)
+		{
+		case 2: {level2start(); break; }
+		case 3: {level3start(); break; }
+		case 4: {level4start(); break; }
+		}
 	}
-
 	else
 	{
 		system("cls");
@@ -179,9 +209,7 @@ void main()
 		system("pause");
 		main();
 	}
-
-	}
-
+}
 
 void level1start()
 	{
@@ -342,7 +370,6 @@ void pokeball() {
 	system("pause");
 	upyourass();
 }
-
 void dungeon() {
 	system("cls");
 	printf("The doorway leads to a cave filled with gold and other ores.\n");
@@ -353,7 +380,6 @@ void dungeon() {
 	level2start();
 
 }	//dungeon1
-
 void sit() {
 	system("cls");
 	printf("You sit down, what do you want to do? (watch tv/get up) \n");
@@ -377,7 +403,6 @@ void sit() {
 		sit();
 	}
 	;}//housesit1
-
 void tv() {
 	system("cls");
 	printf("OOOhoohoUUhu! A porn flick is on. \n");
@@ -404,7 +429,6 @@ void tv() {
 	}
 	
 }//tv1
-
 void porn() {
 	system("cls");
 	printf("EEEEeeewwwww! That was tranny porn, fucking gross man!\n");
@@ -1505,4 +1529,9 @@ void save(int level)
 			fclose(savefile);
 			}
 	}
+void stdinclear()
+	{
+		while (getchar() != '\n'); //stolen from SO 
+	}
+
 
