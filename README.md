@@ -17,7 +17,7 @@ Just compile the source file with your favorite compiler such as gcc.
 
 * **Henrique Pegacha** - *C port & original code* - [Website](https://osga21.github.io)
 * **Nuno Guerreiro** - *Original code*
-* **Rafael Lima** - *Original code & artwork *
+* **Rafael Lima** - *Original code & artwork*
 
 
 ## Acknowledgments
